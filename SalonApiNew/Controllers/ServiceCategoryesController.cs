@@ -81,8 +81,8 @@ namespace SalonApiNew.Controllers
         {
             _context.ServiceCategoryes.Add(serviceCategoryes);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetServiceCategoryes", new { id = serviceCategoryes.CategoryId }, serviceCategoryes);
+
         }
 
         // DELETE: api/ServiceCategoryes/5

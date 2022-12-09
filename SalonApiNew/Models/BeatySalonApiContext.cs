@@ -21,6 +21,7 @@ namespace SalonApiNew.Models
 
         public virtual DbSet<AttachedProduct> AttachedProduct { get; set; }
         public virtual DbSet<Client> Client { get; set; }
+        public virtual DbSet<ClientRecords> ClientRecords { get; set; }
         public virtual DbSet<ClientServices> ClientServices { get; set; }
         public virtual DbSet<DocumentByService> DocumentByService { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
@@ -28,7 +29,7 @@ namespace SalonApiNew.Models
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ProductPhoto> ProductPhoto { get; set; }
         public virtual DbSet<ProductSale> ProductSale { get; set; }
-        
+        public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<ServiceCategoryes> ServiceCategoryes { get; set; }
         public virtual DbSet<ServicePhotos> ServicePhotos { get; set; }
         public virtual DbSet<Services> Services { get; set; }
@@ -104,6 +105,40 @@ namespace SalonApiNew.Models
                     .HasForeignKey(d => d.GenderCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Client_Gender");
+            });
+
+            modelBuilder.Entity<ClientRecords>(entity =>
+            {
+                entity.HasKey(e => e.IdRecord);
+
+                entity.Property(e => e.IdRecord)
+                    .HasColumnName("idRecord")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ClientName)
+                    .IsRequired()
+                    .HasColumnName("clientName")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ClientSurname)
+                    .IsRequired()
+                    .HasColumnName("clientSurname")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.RecordDate)
+                    .IsRequired()
+                    .HasColumnName("recordDate")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.RecordTime)
+                    .IsRequired()
+                    .HasColumnName("recordTime")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ServiceName)
+                    .IsRequired()
+                    .HasColumnName("serviceName")
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<ClientServices>(entity =>
@@ -227,7 +262,14 @@ namespace SalonApiNew.Models
                     .HasConstraintName("FK_ProductSale_Product");
             });
 
-            
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Role)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
 
             modelBuilder.Entity<ServiceCategoryes>(entity =>
             {
@@ -330,10 +372,14 @@ namespace SalonApiNew.Models
                 entity.Property(e => e.UserOtherName).HasMaxLength(50);
 
                 entity.Property(e => e.UserPassword)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-               
+                entity.HasOne(d => d.IdroleNavigation)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.Idrole)
+                    .HasConstraintName("FK_Users_Roles");
             });
 
             OnModelCreatingPartial(modelBuilder);

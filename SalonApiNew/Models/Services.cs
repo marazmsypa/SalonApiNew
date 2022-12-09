@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
@@ -23,7 +22,6 @@ namespace SalonApiNew.Models
         public string Description { get; set; }
         public double? Discount { get; set; }
         public string MainImagePath { get; set; }
-        [JsonProperty("categoryId")]
         public int? CategoryId { get; set; }
 
         public virtual ServiceCategoryes Category { get; set; }
